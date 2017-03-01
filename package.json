@@ -1,0 +1,14 @@
+{
+  "name": "lambda-redis",
+  "version": "0.0.1",
+  "description": "Connect AWS Lambda with ElasticCache (Redis)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Araan Branco <araan666@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ioredis": "^2.5.0"
+  }
+}

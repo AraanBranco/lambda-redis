@@ -2,8 +2,8 @@
 
 var Redis = require('ioredis');
 var redis = new Redis({
-  port: 6379,          // Redis port
-  host: '127.0.0.1',   // Redis host
+  port: process.env.PORT_REDIS,   // Redis port
+  host: process.env.HOST_REDIS,   // Redis host
   db: 0
 });
 

@@ -1,22 +1,22 @@
 'use strict';
 
-var Helpers = require('./helpers');
+const Helpers = require('./helpers');
 
 exports.handler = function(e, ctx, cb) {
   if(e.create) {
-    Helpers.create({ document: '123123', name: 'REGINALDO' }).then((r) => console.log).catch((e) => console.log);
+    Helpers.create({ key: e.key, e.data }).then((r) => console.log).catch((e) => console.log);
   }
 
   if(e.get) {
-    Helpers.findOne('123123').then((r) => console.log).catch((e) => console.log);
+    Helpers.findOne(e.key).then((r) => console.log).catch((e) => console.log);
   }
 
   if(e.update) {
-    Helpers.update('123123', e.data).then((r) => console.log).catch((e) => console.log);
+    Helpers.update(e.key, e.data).then((r) => console.log).catch((e) => console.log);
   }
 
   if(e.remove) {
-    Helpers.remove('123123').then((r) => console.log).catch((e) => console.log);
+    Helpers.remove(e.key).then((r) => console.log).catch((e) => console.log);
   }
 
   return cb(null, { ok: true });

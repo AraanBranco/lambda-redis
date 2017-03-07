@@ -9,12 +9,12 @@ var redis = new Redis({
 });
 
 exports.create = function(data) {
-  var document = data.document;
+  var key = data.key;
   var name = data.name;
 
-  if(!document) {
-    console.log("Document not exists");
-    throw "Document not exists";
+  if(!key) {
+    console.log("Key not exists");
+    throw "Key not exists";
   }
   if(!name) {
     console.log("Name not exists");
@@ -23,7 +23,7 @@ exports.create = function(data) {
 
   console.log('Init create Key');
   return new Promise((resolve, reject) => {
-    redis.set(document, JSON.stringify({ name }))
+    redis.set(key, JSON.stringify({ name }))
       .then((result) => {
         console.log("Result from create ", result);
         resolve(result);
@@ -35,15 +35,15 @@ exports.create = function(data) {
   });
 };
 
-exports.findOne = function(document) {
-  if(!document) {
-    console.log("Document not exists");
-    throw "Document not exists";
+exports.findOne = function(key) {
+  if(!key) {
+    console.log("Key not exists");
+    throw "Key not exists";
   }
 
-  console.log('Init find Document');
+  console.log('Init find Key');
   return new Promise((resolve, reject) => {
-    redis.get(document)
+    redis.get(key)
       .then((result) => {
         console.log("Read ", result);
         resolve(result);
@@ -55,23 +55,23 @@ exports.findOne = function(document) {
   });
 };
 
-exports.update = function(document, data) {
-  if(!document) {
-    console.log("Document not exists");
-    throw "Document not exists";
+exports.update = function(key, data) {
+  if(!key) {
+    console.log("Key not exists");
+    throw "Key not exists";
   }
 
-  if (data.document) {
-    delete data.document;
+  if (data.key) {
+    delete data.key;
   }
 
   return new Promise((resolve, reject) => {
-    this.findOne(document)
+    this.findOne(key)
       .then((r) => {
         r = JSON.parse(r);
         let dataSet = Object.assign(data, r);
 
-        redis.set(document, JSON.stringify(dataSet))
+        redis.set(key, JSON.stringify(dataSet))
           .then((result) => {
             console.log("Result from update ", result);
             resolve(result);
@@ -84,14 +84,14 @@ exports.update = function(document, data) {
   });
 };
 
-exports.remove = function(document) {
-  if(!document) {
-    console.log("Document not exists");
-    throw "Document not exists";
+exports.remove = function(key) {
+  if(!key) {
+    console.log("Key not exists");
+    throw "Key not exists";
   }
 
   return new Promise((resolve, reject) => {
-    redis.del(document)
+    redis.del(key)
       .then((result) => {
         console.log("Remove item: ", result);
         resolve(result);

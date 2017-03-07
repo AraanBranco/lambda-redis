@@ -1,21 +1,28 @@
 'use strict';
 
-var Redis = require('ioredis');
-var redis = new Redis({
-  port: process.env.PORT_REDIS,   // Redis port
-  host: process.env.HOST_REDIS,   // Redis host
-  db: 0
-});
+var Helpers = require('./helpers');
 
 exports.handler = function(e, ctx, cb) {
-	redis.set('foo', 'bar');
+  if(e.create) {
+    Helpers
+      .create({ document: '123123', name: 'REGINALDO' })
+      .then(() => {
+        Helpers.findOne('123123').then((r) => console.log).catch((err) => console.log);
+      })
+      .catch((err) => console.log);
+  }
 
-	redis.get('foo', function (err, result) {
-		if (err) {
-			console.error(err);
-		} else {
-			console.log(result);
-		}
-	});
-	return cb(null, { goku: true });
+  if(e.get) {
+    Helpers.findOne('123123').then((r) => console.log).catch((e) => console.log);
+  }
+
+  if(e.update) {
+    Helpers.update('123123', e.data).then((r) => console.log).catch((e) => console.log);
+  }
+
+  if(e.remove) {
+    Helpers.remove('123123').then((r) => console.log).catch((e) => console.log);
+  }
+
+  return cb(null, { ok: true });
 };

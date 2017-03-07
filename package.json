@@ -9,6 +9,7 @@
   "author": "Araan Branco <araan666@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "ioredis": "^2.5.0"
   }
 }

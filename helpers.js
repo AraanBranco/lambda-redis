@@ -45,6 +45,7 @@ exports.findOne = function(key) {
   return new Promise((resolve, reject) => {
     redis.get(key)
       .then((result) => {
+        result = JSON.parse(result);
         console.log("Read ", result);
         resolve(result);
       })
@@ -68,7 +69,6 @@ exports.update = function(key, data) {
   return new Promise((resolve, reject) => {
     this.findOne(key)
       .then((r) => {
-        r = JSON.parse(r);
         let dataSet = Object.assign(data, r);
 
         redis.set(key, JSON.stringify(dataSet))

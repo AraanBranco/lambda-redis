@@ -66,22 +66,18 @@ exports.update = function(key, data) {
     delete data.key;
   }
 
-  return new Promise((resolve, reject) => {
-    this.findOne(key)
-      .then((r) => {
-        let dataSet = Object.assign(data, r);
+  return this.findOne(key)
+    .then((r) => {
+      let dataSet = Object.assign(data, r);
 
-        redis.set(key, JSON.stringify(dataSet))
-          .then((result) => {
-            console.log("Result from update ", result);
-            resolve(result);
-          })
-          .catch((err) => {
-            console.log("Error from update ", err);
-            reject(err);
-          });
-      });
-  });
+      return redis.set(key, JSON.stringify(dataSet))
+        .tap((result) => {
+          console.log("Result from update ", result);
+        })
+        .catchThrow((err) => {
+          console.log("Error from update ", err);
+        });
+    });
 };
 
 exports.remove = function(key) {

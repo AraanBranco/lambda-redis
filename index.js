@@ -4,12 +4,7 @@ var Helpers = require('./helpers');
 
 exports.handler = function(e, ctx, cb) {
   if(e.create) {
-    Helpers
-      .create({ document: '123123', name: 'REGINALDO' })
-      .then(() => {
-        Helpers.findOne('123123').then((r) => console.log).catch((err) => console.log);
-      })
-      .catch((err) => console.log);
+    Helpers.create({ document: '123123', name: 'REGINALDO' }).then((r) => console.log).catch((e) => console.log);
   }
 
   if(e.get) {

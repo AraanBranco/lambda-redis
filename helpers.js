@@ -11,6 +11,7 @@ var redis = new Redis({
 exports.create = function(data) {
   var document = data.document;
   var name = data.name;
+
   if(!document) {
     console.log("Document not exists");
     throw "Document not exists";
@@ -19,7 +20,6 @@ exports.create = function(data) {
     console.log("Name not exists");
     throw "Name not exists";
   }
-
 
   console.log('Init create Key');
   return new Promise((resolve, reject) => {
@@ -61,39 +61,43 @@ exports.update = function(document, data) {
     throw "Document not exists";
   }
 
-  if (data.document)
+  if (data.document) {
     delete data.document;
+  }
 
   return new Promise((resolve, reject) => {
-    redis.set(document, JSON.stringify(data))
-      .then((result) => {
-        console.log("Result from update ", result);
-        resolve(result);
-      })
-      .catch((err) => {
-        console.log("Error from update ", err);
-        reject(err);
+    this.findOne(document)
+      .then((r) => {
+        r = JSON.parse(r);
+        let dataSet = Object.assign(data, r);
+
+        redis.set(document, JSON.stringify(dataSet))
+          .then((result) => {
+            console.log("Result from update ", result);
+            resolve(result);
+          })
+          .catch((err) => {
+            console.log("Error from update ", err);
+            reject(err);
+          });
       });
   });
 };
 
-exports.remove = function(documentUser) {
-  if(!documentUser) {
+exports.remove = function(document) {
+  if(!document) {
+    console.log("Document not exists");
     throw "Document not exists";
   }
 
-  var pipeline = redis.pipeline();
-
   return new Promise((resolve, reject) => {
-    var promise = pipeline.get(documentUser).del().exec();
-
-    promise
+    redis.del(document)
       .then((result) => {
-        console.log("result", result);
+        console.log("Remove item: ", result);
         resolve(result);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error from remove item ", err);
         reject(err)
       });
   })

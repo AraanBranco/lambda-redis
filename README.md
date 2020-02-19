@@ -21,7 +21,7 @@ Example of Payload
 ```
 {
   "update": true,
-  "key": 1
+  "key": 1,
   "data": {
     "age": 12,
     "gender": "male"

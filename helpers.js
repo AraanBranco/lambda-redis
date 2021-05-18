@@ -31,6 +31,9 @@ exports.create = function(data) {
       .catch((err) => {
         console.log("Error from create ", err);
         reject(err);
+      })
+      .finally(() => {
+        redis.quit();
       });
   });
 };
@@ -52,6 +55,9 @@ exports.findOne = function(key) {
       .catch((err) => {
         console.log("Error from read ", err);
         reject(err);
+      })
+      .finally(() => {
+        redis.quit();
       });
   });
 };
@@ -77,6 +83,9 @@ exports.update = function(key, data) {
         .catchThrow((err) => {
           console.log("Error from update ", err);
         });
+    })
+    .finally(() => {
+      redis.quit();
     });
 };
 
@@ -95,6 +104,9 @@ exports.remove = function(key) {
       .catch((err) => {
         console.log("Error from remove item ", err);
         reject(err)
+      })
+      .finally(() => {
+        redis.quit();
       });
   })
 };
